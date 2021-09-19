@@ -17,6 +17,6 @@
     "rimraf": "^3.0.0"
   },
   "dependencies": {
-    "clb-near-wasm": "^0.1.0"
+    "clb-near-wasm": "^0.1.2"
   }
 }

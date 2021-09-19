@@ -1,6 +1,6 @@
 [package]
 name = "clb-near-wasm"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Felix Kuestahler <felix@cloudburo.net>"]
 description = "A NPM package which provides Rust-based Web-Assembly Features"
 repository = "https://github.com/talfco/clb-near-node-app"
@@ -20,6 +20,7 @@ lto = true
 
 [dependencies]
 wasm-bindgen = "0.2.78"
+shamir = "2.0.0"
 
 # `wee_alloc` is a tiny allocator for wasm that is only ~1K in code size
 # compared to the default allocator's ~10K. However, it is slower than the default
