@@ -1,16 +1,15 @@
 {
-  "name": "my-lib",
+  "name": "clb-near-node-app",
   "collaborators": [
-    "Nik Graf <nik@nikgraf.com>"
+    "Felix Kuestahler <felix@ncloudburo.net>"
   ],
   "version": "0.1.0",
   "files": [
-    "my_lib_bg.wasm",
-    "my_lib.js",
-    "my_lib_bg.js",
-    "my_lib.d.ts"
+    "clb_near_node_app_bg.wasm",
+    "clb_near_node_app.js",
+    "clb_near_node_app.d.ts"
   ],
-  "module": "my_lib.js",
-  "types": "my_lib.d.ts",
+  "module": "clb_near_node_app.js",
+  "types": "clb_near_node_app.d.ts",
   "sideEffects": false
 }

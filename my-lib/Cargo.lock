@@ -21,6 +21,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "clb-near-node-app"
+version = "0.1.0"
+dependencies = [
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -36,13 +43,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cba860f648db8e6f269df990180c2217f333472b4a6e901e97446858487971e2"
 dependencies = [
  "cfg-if 0.1.5",
-]
-
-[[package]]
-name = "my-lib"
-version = "0.1.0"
-dependencies = [
- "wasm-bindgen",
 ]
 
 [[package]]
