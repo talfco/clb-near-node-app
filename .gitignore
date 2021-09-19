@@ -1,1 +1,3 @@
 /my-lib/target
+.env
+.npmrc

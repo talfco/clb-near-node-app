@@ -1,7 +1,10 @@
 [package]
 name = "clb-near-node-app"
-version = "0.1.0"
-authors = ["Felix Kuestahler <felix@ncloudburo.net>"]
+version = "0.3.0"
+authors = ["Felix Kuestahler <felix@cloudburo.net>"]
+description = "A off-chain node application which interacts with the NEAR blockchain"
+repository = "https://github.com/talfco/clb-near-node-app"
+license = "GPL-3.0"
 
 [lib]
 crate-type = ["cdylib"]
