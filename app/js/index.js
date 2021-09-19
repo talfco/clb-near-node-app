@@ -1,3 +1,3 @@
-import("my-lib-test-1").then(module => {
+import("clb-near-node-app").then(module => {
   module.greet("Jane");
 });

@@ -1,5 +1,5 @@
 {
-  "author": "Nick Fitzgerald <nfitzgerald@mozilla.com>",
+  "author": "Felix Kuestahler <felix@cloudburo.net>",
   "name": "create-rust-webpack",
   "version": "0.1.3",
   "repository": "https://github.com/talfco/clb-near-node-app",
@@ -19,6 +19,6 @@
     "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
-    "my-lib-test-1": "^0.1.0"
+    "clb-near-node-app": "^0.3.1"
   }
 }
