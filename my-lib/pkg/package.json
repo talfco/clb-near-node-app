@@ -3,8 +3,8 @@
   "collaborators": [
     "Felix Kuestahler <felix@cloudburo.net>"
   ],
-  "description": "A off-chain node application which interacts with the NEAR blockchain",
-  "version": "0.3.0",
+  "description": "A NPM package which provides Rust-based Web-Assembly Features",
+  "version": "0.3.1",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
