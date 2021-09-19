@@ -1,13 +1,16 @@
 {
-  "name": "my-lib-test-1",
+  "name": "my-lib",
   "collaborators": [
     "Nik Graf <nik@nikgraf.com>"
   ],
   "version": "0.1.0",
   "files": [
     "my_lib_bg.wasm",
+    "my_lib.js",
+    "my_lib_bg.js",
     "my_lib.d.ts"
   ],
-  "main": "my_lib.js",
-  "types": "my_lib.d.ts"
+  "module": "my_lib.js",
+  "types": "my_lib.d.ts",
+  "sideEffects": false
 }
