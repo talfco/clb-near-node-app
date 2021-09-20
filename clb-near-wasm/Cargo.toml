@@ -1,6 +1,6 @@
 [package]
 name = "clb-near-wasm"
-version = "0.1.2"
+version = "0.1.11"
 authors = ["Felix Kuestahler <felix@cloudburo.net>"]
 description = "A NPM package which provides Rust-based Web-Assembly Features"
 repository = "https://github.com/talfco/clb-near-node-app"
@@ -17,10 +17,18 @@ lto = true
 [features]
 # If you uncomment this line, it will enable `wee_alloc`:
 #default = ["wee_alloc"]
+# https://docs.rs/getrandom/0.2.3/getrandom/
+# wasm = wasm32‑*‑unknown
+
+
 
 [dependencies]
 wasm-bindgen = "0.2.78"
-shamir = "2.0.0"
+# A workaround, sharks has a dependency to getrandom
+# https://docs.rs/getrandom/0.2.3/getrandom/
+getrandom = { version = "0.2.3", features = ["js"] }
+sharks = "0.5.0"
+console_error_panic_hook = "0.1.6"
 
 # `wee_alloc` is a tiny allocator for wasm that is only ~1K in code size
 # compared to the default allocator's ~10K. However, it is slower than the default
@@ -37,8 +45,8 @@ features = ["console"]
 # logging them with `console.error`. This is great for development, but requires
 # all the `std::fmt` and `std::panicking` infrastructure, so it's only enabled
 # in debug mode.
-[target."cfg(debug_assertions)".dependencies]
-console_error_panic_hook = "0.1.5"
+#[target."cfg(debug_assertions)".dependencies]
+#console_error_panic_hook = "0.1.5"
 
 # These crates are used for running unit tests.
 [dev-dependencies]
