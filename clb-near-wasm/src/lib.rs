@@ -42,28 +42,27 @@ fn do_shamir_secrets() {
     // Obtain an iterator over the shares for secret [1, 2, 3, 4]
     let secret_str = "Hello World";
     let secret_vec = secret_str.as_bytes().to_vec();
-    let dealer = sharks.dealer(&[1, 2, 3, 4]);
+    let dealer = sharks.dealer(&secret_vec);
     //let dealer = sharks.dealer(&secret_vec);
     // Get 10 shares
     let shares: Vec<Share> = dealer.take(10).collect();
     // Recover the original secret!
-    let secret = sharks.recover(shares.as_slice()).unwrap();
-    assert_eq!(secret, vec![1, 2, 3, 4]);
+    let secret_recovered = sharks.recover(shares.as_slice()).unwrap();
+    assert_eq!(String::from_utf8(secret_vec).unwrap(), "Hello World");
+    let mut i: usize = 0;
+    for share  in shares {
+        let bytes:Vec<u8> = Vec::from(&share);
+        let res = write_to_file(i as i32, &bytes);
+        match res {
+            Ok(n)  => web_sys::console::log_1(&"File Writing OK".into()),
+            Err(e) => web_sys::console::log_2(&"File Writing NOK".into(), &e.to_string().into())
+        }
+        i = i+1;
+    }
 
-    let s = String::from_utf8(secret_vec);
-    web_sys::console::log_2(&"Got String Back".into(), &s.unwrap().into());
-    //let secret_data = SecretData::with_secret("Hello World!", shares);
+    //let s = String::from_utf8(secret_vec);
     web_sys::console::log_1(&"Shmair called with secret!".into());
-    //for number in 1..shares+1 {
-    //    write_to_file(number as i32, &secret_data.get_share(number).unwrap());
-    //}
-    //let share1 = read_from_file(1);
-    //let share2 = read_from_file(2);
-    //let share3 = read_from_file(3);
-    //let share1: Vec<u8> = share1str.as_bytes().to_vec();
 
-    //let recovered = SecretData::recover_secret(3, vec![share1, share2, share3]).unwrap();
-    //println!("Recovered: {}", recovered);
 
 }
 
