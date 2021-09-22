@@ -24,12 +24,12 @@ lto = true
 
 [dependencies]
 wasm-bindgen = "0.2.78"
+js-sys = "0.3.55"
+console_error_panic_hook = "0.1.6"
 # A workaround, sharks has a dependency to getrandom
 # https://docs.rs/getrandom/0.2.3/getrandom/
 getrandom = { version = "0.2.3", features = ["js"] }
 sharks = "0.5.0"
-console_error_panic_hook = "0.1.6"
-
 # `wee_alloc` is a tiny allocator for wasm that is only ~1K in code size
 # compared to the default allocator's ~10K. However, it is slower than the default
 # allocator, so it's not enabled by default.

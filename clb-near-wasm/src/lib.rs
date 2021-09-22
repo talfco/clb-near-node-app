@@ -1,6 +1,9 @@
+// https://stackoverflow.com/questions/47529643/how-to-return-a-string-or-similar-from-rust-in-webassembly
 extern crate wasm_bindgen;
 extern crate console_error_panic_hook;
 extern crate sharks;
+extern crate js_sys;
+
 
 use wasm_bindgen::prelude::*;
 
@@ -10,8 +13,7 @@ use std::fs::File;
 use std::format;
 use sharks::{ Sharks, Share };
 
-// use shamir::SecretData;
-use std::ptr::null;
+
 
 // TEST SAMPLES
 fn using_web_sys() {
@@ -35,34 +37,36 @@ pub fn greet(name: &str) {
     do_shamir_secrets();
 }
 
-fn do_shamir_secrets() {
+// https://stackoverflow.com/questions/64454597/how-can-a-vec-be-returned-as-a-typed-array-with-wasm-bindgen
+fn do_shamir_secrets() -> js_sys::Uint32Array {
 
     // Set a minimum threshold of 10 shares
     let sharks = Sharks(10);
-    // Obtain an iterator over the shares for secret [1, 2, 3, 4]
     let secret_str = "Hello World";
     let secret_vec = secret_str.as_bytes().to_vec();
     let dealer = sharks.dealer(&secret_vec);
-    //let dealer = sharks.dealer(&secret_vec);
     // Get 10 shares
     let shares: Vec<Share> = dealer.take(10).collect();
     // Recover the original secret!
     let secret_recovered = sharks.recover(shares.as_slice()).unwrap();
     assert_eq!(String::from_utf8(secret_vec).unwrap(), "Hello World");
     let mut i: usize = 0;
+    let mut header_vec = Vec::new();
+
     for share  in shares {
         let bytes:Vec<u8> = Vec::from(&share);
-        let res = write_to_file(i as i32, &bytes);
-        match res {
-            Ok(n)  => web_sys::console::log_1(&"File Writing OK".into()),
-            Err(e) => web_sys::console::log_2(&"File Writing NOK".into(), &e.to_string().into())
-        }
-        i = i+1;
+        header_vec.push(bytes.len() as u32);
+        web_sys::console::log_2(&"Got a share of length".into(),&JsValue::from(bytes.len()));
+        //let res = write_to_file(i as i32, &bytes);
+        //match res {
+        //    Ok(n)  => web_sys::console::log_1(&"File Writing OK".into()),
+        //    Err(e) => web_sys::console::log_2(&"File Writing NOK".into(), &e.to_string().into() )
+        //}
+        //i = i+1;
     }
-
     //let s = String::from_utf8(secret_vec);
     web_sys::console::log_1(&"Shmair called with secret!".into());
-
+    js_sys::Uint32Array::from(&header_vec[..])
 
 }
 
