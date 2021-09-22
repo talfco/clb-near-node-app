@@ -9,10 +9,10 @@ rust
         var endPos = result[0]+1;
         for (var i = 1; i < result[0]+1; i++)
         {
-            endpos += result[i];
+            endPos += result[i];
             var share = result.slice(startPos,endPos);
             console.log("Share: "+i+"/"+result[i]+" reading bytes "+startpos+".."+endpos+" -> "+share);
-            startpos = endPos;
+            startPos = endPos;
         }
     })
     .catch(console.error);
