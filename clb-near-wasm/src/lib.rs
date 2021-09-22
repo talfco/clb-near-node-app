@@ -34,40 +34,38 @@ pub fn greet(name: &str) {
     console_error_panic_hook::set_once();
     alert(&format!("Hello, {}!", name));
     using_web_sys();
-    do_shamir_secrets();
 }
 
-// https://stackoverflow.com/questions/64454597/how-can-a-vec-be-returned-as-a-typed-array-with-wasm-bindgen
-fn do_shamir_secrets() -> js_sys::Uint32Array {
-
+#[wasm_bindgen]
+pub fn do_shamir_secrets(secret_str : &str) -> js_sys::Uint8Array {
     // Set a minimum threshold of 10 shares
-    let sharks = Sharks(10);
-    let secret_str = "Hello World";
+    let shares_size:usize = 10;
+    web_sys::console::log_2(&"Shamirs secret using shares: ".into(),&JsValue::from(shares_size));
+    let sharks = Sharks(shares_size as u8);
     let secret_vec = secret_str.as_bytes().to_vec();
     let dealer = sharks.dealer(&secret_vec);
-    // Get 10 shares
-    let shares: Vec<Share> = dealer.take(10).collect();
+    let shares: Vec<Share> = dealer.take(shares_size).collect();
     // Recover the original secret!
     let secret_recovered = sharks.recover(shares.as_slice()).unwrap();
-    assert_eq!(String::from_utf8(secret_vec).unwrap(), "Hello World");
+    assert_eq!(String::from_utf8(secret_vec).unwrap(), secret_str);
     let mut i: usize = 0;
+    // Prepare a header vector
     let mut header_vec = Vec::new();
+    // First byte is the number of shares
+    header_vec.push(shares_size as u8);
+    // The content vector
+    let mut content_vec:Vec<u8> = Vec::new();
 
     for share  in shares {
-        let bytes:Vec<u8> = Vec::from(&share);
-        header_vec.push(bytes.len() as u32);
-        web_sys::console::log_2(&"Got a share of length".into(),&JsValue::from(bytes.len()));
-        //let res = write_to_file(i as i32, &bytes);
-        //match res {
-        //    Ok(n)  => web_sys::console::log_1(&"File Writing OK".into()),
-        //    Err(e) => web_sys::console::log_2(&"File Writing NOK".into(), &e.to_string().into() )
-        //}
-        //i = i+1;
+        let mut share_content:Vec<u8> = Vec::from(&share);
+        header_vec.push(share_content.len() as u8);
+        web_sys::console::log_2(&"Got a share of length: ".into(),&JsValue::from(share_content.len()));
+        content_vec.append(& mut share_content);
     }
+    header_vec.append(& mut content_vec);
     //let s = String::from_utf8(secret_vec);
-    web_sys::console::log_1(&"Shmair called with secret!".into());
-    js_sys::Uint32Array::from(&header_vec[..])
-
+    web_sys::console::log_2(&"Returning Shamirs base vector: ".into(),&JsValue::from(header_vec.len()) );
+    js_sys::Uint8Array::from(&header_vec[..])
 }
 
 fn write_to_file(pos: i32, data: &Vec<u8>) -> std::io::Result<()> {
