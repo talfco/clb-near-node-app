@@ -17,6 +17,7 @@
     "rimraf": "^3.0.0"
   },
   "dependencies": {
-    "clb-near-wasm": "^0.1.10"
+    "clb-near-wasm": "^0.1.10",
+    "web3.storage": "^3.1.0"
   }
 }

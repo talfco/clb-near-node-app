@@ -1,0 +1,23 @@
+{
+  "author": "Felix Kuestahler <felix@cloudburo.net>",
+  "name": "clb-near-backend",
+  "description": "The Off-chain Backen by Clouduro.net to interact with File Coin",
+  "version": "0.1.0",
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "global": "^4.4.0",
+    "minimist": "^1.2.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "base-64": "^1.0.0",
+    "big-integer": "^1.6.48",
+    "get-random-values": "^1.2.2",
+    "utf-8": "^2.0.0",
+    "web3.storage": "^3.1.0"
+  }
+}
