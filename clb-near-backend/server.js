@@ -4,8 +4,6 @@ const process = require('process');
 const minimist = require('minimist');
 const { Web3Storage, File } = require('web3.storage');
 
-const sssa = require('./sssa/sssa.js');
-
 const express = require('express');
 const app = express();
 const multer = require('multer');
@@ -16,7 +14,7 @@ const crypto = require("crypto");
 const base64 = require('base-64');
 const fs = require("fs");
 
-const wasmBuffer = fs.readFileSync('../clb-near-wasm/pkg/clb_near_wasm_bg.wasm');
+const wasmAdaptor = import('./dist/index.js');
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -61,7 +59,7 @@ app.post('/upload',function(req, res) {
 
 app.listen(8000, function() {
     console.log('App running on port 8000');
-    wasm();
+    uploadToWeb3Store("Hello World");
 });
 
 function hexToBytes(hex) {
@@ -96,27 +94,7 @@ function doEncrypt(message) {
     return initVectorHex+"."+encryptedData;
 }
 
-function doSSSAEncrypt(fileContent,fileName) {
-    /*
-    rust
-        .then(m => {
-            // We are getting back a UInt8Array
-            var result = m.do_shamir_secrets('Hello World');
-        });
 
-     */
-    let shares = sssa.create(process.env.SSSA_SHARES_MIN, process.env.SSSA_SHARES_MAX, fileContent)
-    let files=[];
-    for (let index in shares) {
-        console.log("Got share to store "+index+": "+shares[index]);
-        try {
-            files[index] = new File([ shares[index]],doEncrypt(index+"-"+fileName));
-        } catch (err) {
-            console.error(err)
-        }
-    }
-    return files;
-}
 
 function web3store(fileContent, fileName) {
     const storage = new Web3Storage({token: process.env.WEB3_STORAGE_TOKEN} );
@@ -129,27 +107,32 @@ function web3store(fileContent, fileName) {
     return cids;
 }
 
+async function persistToIPFStore(file) {
+    const storage = new Web3Storage({token: process.env.WEB3_STORAGE_TOKEN} );
+    const cid = await storage.put([file]);
+    console.log('Content '+file.name+ ' added with CID:'+ cid);
+}
 
-
-// Assume add.wasm file exists that contains a single function adding 2 provided arguments
-async function wasm() {
-    const lib = await WebAssembly.instantiate(new Uint8Array(wasmBuffer)).
-    then(res => res.instance.exports);
-    const result = lib.do_shamir_secrets("Hello World");
-    console.log("First Byte: Number of shares: "+result[0]);
-    var startPos = result[0]+1;
-    var endPos = result[0]+1;
-    var files=[];
-    for (var i = 1; i < result[0]+1; i++)
-    {
-        endPos += result[i];
-        var share = result.slice(startPos,endPos);
-        console.log("Share: "+i+"/"+result[i]+" reading bytes "+startPos+".."+endPos+" -> "+share);
-        try {
-            files[i-1] = new File(share,'share-'+i+'.txt')
-        } catch (err) {
-            console.error(err)
-        }
-        startPos = endPos;
-    }
+async function uploadToWeb3Store(fileContent) {
+    wasmAdaptor
+        .then(wasm => {
+            // First part: Apply Shamir Secrets to the file content
+            const result = wasm.do_shamir_secrets(fileContent);
+            console.log("Number of shares: "+result[0]);
+            var startPos = result[0]+1;
+            var endPos = result[0]+1;
+            // Split the returned Uint8Array into the secret shares
+            for (var i = 1; i < result[0]+1; i++)
+            {
+                endPos += result[i];
+                var share = result.slice(startPos,endPos);
+                console.log("Share: "+i+"/"+result[i]+" reading bytes "+startPos+".."+endPos+" -> "+share);
+                try {
+                    persistToIPFStore(new File(share,'share-'+i+'.txt'));
+                } catch (err) {
+                    console.error(err)
+                }
+                startPos = endPos;
+            }
+        });
 }

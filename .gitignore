@@ -2,3 +2,4 @@
 .env
 .npmrc
 /clb-near-backend/node_modules/
+/clb-near-backend/dist/

@@ -2,7 +2,7 @@
 const process = require('process');
 const minimist = require('minimist');
 import { Web3Storage, File } from 'web3.storage/dist/bundle.esm.min.js'
-const rust = import('../../clb-near-wasm/pkg');
+const rust = import('../../clb-near-wasm/pkg/clb_near_wasm.js');
 rust
     .then(m => {
         m.greet('World!');

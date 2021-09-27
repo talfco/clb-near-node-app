@@ -3,7 +3,19 @@
   "name": "clb-near-backend",
   "description": "The Off-chain Backen by Clouduro.net to interact with File Coin",
   "version": "0.1.0",
-  "scripts": {},
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "wasm-pack build --release --target nodejs --out-dir dist --out-name index",
+    "bench": "node ./benchmarks/fibonacci.js"
+  },
+  "license": "UNLICENSED",
+  "files": [
+    "dist/index.d.ts",
+    "dist/index.js",
+    "dist/index_bg.js",
+    "dist/index_bg.wasm"
+  ],
+  "types": "wasm/index.d.ts",
   "devDependencies": {},
   "dependencies": {
     "crypto": "^1.0.1",
