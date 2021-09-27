@@ -1,5 +1,7 @@
-/clb-near-wasm/target
+/clb-near-wasm/target/
 .env
 .npmrc
 /clb-near-backend/node_modules/
+/clb-near-backend/target/
 /clb-near-backend/dist/
+target\
