@@ -1,12 +1,11 @@
 {
   "author": "Felix Kuestahler <felix@cloudburo.net>",
   "name": "clb-near-backend",
-  "description": "The Off-chain Backen by Clouduro.net to interact with File Coin",
+  "description": "The Off-chain Backend by Clouduro.net to interact with File Coin",
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "wasm-pack build --release --target nodejs --out-dir dist --out-name index",
-    "bench": "node ./benchmarks/fibonacci.js"
+    "build": "wasm-pack build --release --target nodejs --out-dir dist --out-name index"
   },
   "license": "UNLICENSED",
   "files": [
