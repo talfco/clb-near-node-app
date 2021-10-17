@@ -10,8 +10,6 @@ const app = express();
 const multer = require('multer');
 const cors = require('cors');
 const morgan = require('morgan');
-const btoa = require('btoa');
-const atob = require('atob');
 
 
 const crypto = require("crypto");
@@ -24,12 +22,9 @@ const wasmInit = import('./dist/index.js');
 // in the app.js
 // https://www.reddit.com/r/rust/comments/dgjfn4/how_to_consume_a_uint8array_of_rust_pointer_in/
 //
-//const memory  = import('./dist/index_bg');
 
 app.use(cors())
 app.use(morgan('dev'))
-
-
 
 let storage = multer.memoryStorage({
     destination: function (req, file, cb) {
